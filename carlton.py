@@ -1,9 +1,15 @@
 # carlton.py
 import os
-
 import discord
-TOKEN = os.getenv('DISCORD_TOKEN')
+import requests
+from libs import secrets
+from libs import aws
+from libs import giphy
+from libs import custom_messages as cm
 
+DISCORD_TOKEN = secrets.get_secret('DISCORD_TOKEN')
+
+# All discord related functionality below here
 client = discord.Client()
 
 @client.event
@@ -15,21 +21,31 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('$help'):
+    elif message.content.startswith('$help'):
         # return message to channel with supported commands
         pass
 
-    if message.content.startswith('$hello'):
-        await message.channel.send('Hello!')
+    elif message.content.startswith('$hello'):
+        # export this into a custom message module?
+        greeting = cm.get_greeting()
+        image = giphy.get_first_gif('carlton dance')
+        await message.channel.send(greeting)
+        await message.channel.send(image)
 
-    if message.content.startswith('$start-server'):
-        # sends command to lambda endpoint to start the EC2 instance
-        pass
+    elif message.content.startswith('$start'):
+        image = giphy.get_first_gif('you got it')
+        await message.channel.send(image)
+        # aws.start_minecraft_server()
+        await message.channel.send('Minecraft bedrock server started. Please give it a couple moments to finish setting up!')
 
-    if message.content.startwith('$stop-server'):
-        # sends commands to manually stop server
-        pass
+    elif message.content.startswith('$stop'):
+        image = giphy.get_first_gif('halt')
+        await message.channel.send(image)
+        # aws.stop_minecraft_server()
+        await message.channel.send('Minecraft server stopped.')
 
-    if message.content.startswith('$')
+    elif message.content.startswith('$status'):
+        # TODO: Implement messsage parsing
+        aws.check_minecraft_server_status()
 
-client.run(TOKEN)
+client.run(DISCORD_TOKEN)
