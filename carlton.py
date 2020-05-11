@@ -35,6 +35,7 @@ async def on_message(message):
     elif message.content.startswith('$start'):
         image = giphy.get_first_gif('you got it')
         await message.channel.send(image)
+        # probably should return the IP address of the new minecraft server
         # aws.start_minecraft_server()
         await message.channel.send('Minecraft bedrock server started. Please give it a couple moments to finish setting up!')
 
