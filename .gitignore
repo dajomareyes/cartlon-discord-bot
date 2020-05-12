@@ -1,3 +1,4 @@
 vault.yml
 __pycache__/
 .vscode/
+venv/

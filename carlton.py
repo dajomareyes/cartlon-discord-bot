@@ -36,17 +36,19 @@ async def on_message(message):
         image = giphy.get_first_gif('you got it')
         await message.channel.send(image)
         # probably should return the IP address of the new minecraft server
-        # aws.start_minecraft_server()
-        await message.channel.send('Minecraft bedrock server started. Please give it a couple moments to finish setting up!')
+        server_state = aws.start_minecraft_server()
+        await message.channel.send('Minecraft bedrock server started. Here\'s the server information')
+        await message.channel.send(server_state)
 
     elif message.content.startswith('$stop'):
         image = giphy.get_first_gif('halt')
         await message.channel.send(image)
-        # aws.stop_minecraft_server()
+        aws.stop_minecraft_server()
         await message.channel.send('Minecraft server stopped.')
 
     elif message.content.startswith('$status'):
         # TODO: Implement messsage parsing
-        aws.check_minecraft_server_status()
+        resp = aws.check_minecraft_server_status()
+        await message.channel.send(resp)
 
 client.run(DISCORD_TOKEN)
